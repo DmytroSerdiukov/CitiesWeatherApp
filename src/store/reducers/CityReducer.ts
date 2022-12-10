@@ -6,12 +6,10 @@ import CitiesStorage from '../../LocalStorage'
 
 interface CityState {
   cities: Array<any>
-  city: any
 }
 
 const initialState: CityState = {
-  cities: [],
-  city: null
+  cities: []
 }
 
 export const citySlice = createSlice({
@@ -39,12 +37,10 @@ export const citySlice = createSlice({
           el = { ...action.payload }
         }
       })
+      state.cities = [...updated]
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchCityByName.fulfilled, (state, action) => {
-      state.city = { ...action.payload }
-    })
     builder.addCase(updateCardForecast.fulfilled, (state, action) => {
       updateCardForecast(action.payload)
     })
@@ -57,14 +53,14 @@ export const fetchCityByName = createAsyncThunk(
   'cities/fetchCityByName',
   async (name: string, thunkAPI: any) => {
     const data = await CityAPI.fetchCityData(name)
-    return data
+    thunkAPI.dispatch(saveCityToStorage(data.name))
   }
 )
 
 export const updateCardForecast = createAsyncThunk(
   'cities/fetchCardForecast',
-  async (id: any, thunkAPI: any) => {
-    const data = await CityAPI.fetchCityById(id)
+  async (city: any, thunkAPI: any) => {
+    const data = await CityAPI.fetchCityData(city)
     return data
   }
 )

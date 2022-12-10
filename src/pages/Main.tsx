@@ -4,17 +4,14 @@ import React, { FC, useEffect, useState, useRef } from 'react'
 import { CityAPI } from '../api'
 import CityCard from '../components/CityCard/container'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { fetchCityByName, getCities } from '../store/reducers/CityReducer'
+import { fetchCityByName, getCities, saveCityToStorage } from '../store/reducers/CityReducer'
 
 const MainPage: FC = () => {
   // const [cityData, setData] = useState<any>()
   const inputRef = useRef<any>()
-  const city = useAppSelector((state) => state.city.city)
   const cities = useAppSelector((state) => state.city.cities)
   const dispatch = useAppDispatch()
-
   console.log(cities)
-  console.log('fetched city', city)
 
   const fetchCity = async (): Promise<any> => {
     const value = inputRef.current.value
@@ -46,9 +43,6 @@ const MainPage: FC = () => {
           Submit
         </Button>
       </Container>
-      <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-        {city != null ? <CityCard {...city} /> : null}
-      </Container>
       <Container
         style={{
           maxWidth: '80%',
@@ -58,7 +52,7 @@ const MainPage: FC = () => {
         }}
       >
         {cities != null && cities.length > 0
-          ? cities.map((city) => <CityCard key={city.id} {...city} />)
+          ? cities.map((city: any, index: any) => <CityCard key={index} city={city} />)
           : null}
       </Container>
     </Container>

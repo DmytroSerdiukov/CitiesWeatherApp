@@ -2,70 +2,76 @@ import { Card, CardContent, Typography } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import UpdateIcon from '@mui/icons-material/Update'
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useAppDispatch } from '../../store/hooks'
-import {
-  removeCityFromStorage,
-  saveCityToStorage,
-  updateCardForecast
-} from '../../store/reducers/CityReducer'
 import { CityAPI } from '../../api'
 
 interface ICityProps {
-  id: number
-  name: any
-  temp: any
-  weather: any
+  city: any
+  addToStorage: (city: any) => void
+  deleteCityFromStorage: (id: any) => void
+  updateCityForecast: (id: any) => void
 }
 
-const CityCardMarkup: FC<ICityProps> = ({ id, name, temp, weather }) => {
-  console.log(temp)
-
-  const [isAdded, setStatus] = useState(false)
-  const dispatch = useAppDispatch()
-
-  const ChangeStatus = () => {
-    if (!isAdded) {
-      addToLocalStorage()
-      setStatus(true)
-      return
-    }
-    removeFromStorage()
-    setStatus(false)
+const CityCardMarkup: FC<ICityProps> = ({
+  city,
+  addToStorage,
+  deleteCityFromStorage,
+  updateCityForecast
+}) => {
+  const [data, setData] = useState<any>(null)
+  console.log(data)
+  const getCurrentWeather = async () => {
+    const res: any = await CityAPI.fetchCityData(city)
+    setData(res)
   }
+  useEffect(() => {
+    getCurrentWeather()
+  }, [])
+  // const temperature = Math.floor(temperature - 273.15)
 
-  const addToLocalStorage = () => {
-    const city = { id, name, temp, weather }
-    dispatch(saveCityToStorage(city))
-  }
+  // const [isAdded, setStatus] = useState(false)
+
+  // const addToLocalStorage = () => {
+  //   // const city = { id, name, temp: main.temp, weather }
+  //   addToStorage(city)
+  // }
 
   const removeFromStorage = () => {
-    dispatch(removeCityFromStorage(id))
+    deleteCityFromStorage(city)
   }
 
   const updateForecast = () => {
-    dispatch(updateCardForecast(id))
+    getCurrentWeather()
   }
 
   const iconSize = 30
+
   return (
-    <Card sx={{ width: 275, margin: 1, textAlign: 'center' }}>
+    <Card sx={{ position: 'relative', width: 275, height: 300, margin: 1, textAlign: 'center' }}>
       <CardContent>
-        <Link style={{ textDecoration: 'none' }} to={`/details/${id}`}>
-          <Typography>{name}</Typography>
-          <Typography>{Math.floor(temp - 273.15)}°</Typography>
-          <Typography>{weather[0].main}</Typography>
+        <Link style={{ textDecoration: 'none' }} to={`/details/${city}`}>
+          <Typography variant='h4'>{city}</Typography>
+          {data != null ? (
+            <>
+              <Typography>{Math.floor(data.main.temp - 273.15)}°</Typography>
+              <Typography>{data.weather[0].main}</Typography>
+            </>
+          ) : null}
         </Link>
+
         <div
-          style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}
+          style={{
+            position: 'absolute',
+            left: '40%',
+            bottom: 20,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center'
+          }}
         >
-          <div onClick={ChangeStatus}>
-            {isAdded ? (
-              <HighlightOffIcon color={'error'} sx={{ width: iconSize, height: iconSize }} />
-            ) : (
-              <AddCircleIcon color={'success'} sx={{ width: iconSize, height: iconSize }} />
-            )}
+          <div onClick={removeFromStorage}>
+            <HighlightOffIcon color={'error'} sx={{ width: iconSize, height: iconSize }} />
           </div>
           <div onClick={updateForecast}>
             <UpdateIcon sx={{ width: iconSize, height: iconSize }} />
