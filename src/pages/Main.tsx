@@ -1,13 +1,11 @@
-import { TextField, Button } from '@mui/material'
+import React, { FC, useEffect, useRef } from 'react'
 import { Container } from '@mui/system'
-import React, { FC, useEffect, useState, useRef } from 'react'
-import { CityAPI } from '../api'
+import { TextField, Button } from '@mui/material'
 import CityCard from '../components/CityCard/container'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { fetchCityByName, getCities, saveCityToStorage } from '../store/reducers/CityReducer'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 
 const MainPage: FC = () => {
-  // const [cityData, setData] = useState<any>()
   const inputRef = useRef<any>()
   const cities = useAppSelector((state) => state.city.cities)
   const dispatch = useAppDispatch()
@@ -15,6 +13,7 @@ const MainPage: FC = () => {
 
   const fetchCity = async (): Promise<any> => {
     const value = inputRef.current.value
+    inputRef.current.value = ''
     dispatch(fetchCityByName(value))
   }
 
@@ -27,30 +26,14 @@ const MainPage: FC = () => {
   }, [])
 
   return (
-    <Container
-      maxWidth='lg'
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-    >
-      <Container
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: 2
-        }}
-      >
+    <Container maxWidth='lg' style={styles.wrapper}>
+      <Container sx={styles.inputContainer}>
         <TextField inputRef={inputRef} label={'City name'} data-testdid={'input'} />
-        <Button sx={{ width: 135, height: 55 }} variant='contained' onClick={fetchCity}>
+        <Button sx={styles.button} variant='outlined' onClick={fetchCity}>
           Submit
         </Button>
       </Container>
-      <Container
-        style={{
-          maxWidth: '80%',
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap'
-        }}
-      >
+      <Container style={styles.cities} data-testid='cities'>
         {cities != null && cities.length > 0
           ? cities.map((city: any, index: any) => <CityCard key={index} city={city} />)
           : null}
@@ -60,3 +43,27 @@ const MainPage: FC = () => {
 }
 
 export default MainPage
+
+const styles: any = {
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  inputContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 10
+  },
+  button: {
+    width: 135,
+    height: 55
+  },
+  cities: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    marginTop: 50
+  }
+}

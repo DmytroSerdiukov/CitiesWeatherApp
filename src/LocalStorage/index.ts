@@ -8,7 +8,6 @@ const CitiesStorage = {
   addCity: (city: any) => {
     if (!localStorage.getItem('cities')) localStorage.setItem(`cities`, JSON.stringify([]))
     let cities: any = localStorage.getItem('cities')
-    console.log('CITY', city)
     cities = JSON.parse(cities)
     cities = [...cities, city]
     localStorage.setItem('cities', JSON.stringify(cities))

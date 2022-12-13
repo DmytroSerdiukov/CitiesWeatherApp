@@ -30,13 +30,6 @@ const CityCardMarkup: FC<ICityProps> = ({
   }, [])
   // const temperature = Math.floor(temperature - 273.15)
 
-  // const [isAdded, setStatus] = useState(false)
-
-  // const addToLocalStorage = () => {
-  //   // const city = { id, name, temp: main.temp, weather }
-  //   addToStorage(city)
-  // }
-
   const removeFromStorage = () => {
     deleteCityFromStorage(city)
   }
@@ -45,7 +38,7 @@ const CityCardMarkup: FC<ICityProps> = ({
     getCurrentWeather()
   }
 
-  const iconSize = 30
+  const iconSize = 40
 
   return (
     <Card sx={{ position: 'relative', width: 275, height: 300, margin: 1, textAlign: 'center' }}>
@@ -53,17 +46,23 @@ const CityCardMarkup: FC<ICityProps> = ({
         <Link style={{ textDecoration: 'none' }} to={`/details/${city}`}>
           <Typography variant='h4'>{city}</Typography>
           {data != null ? (
-            <>
-              <Typography>{Math.floor(data.main.temp - 273.15)}°</Typography>
+            <div
+              style={{
+                marginTop: 60
+              }}
+            >
+              <Typography style={{ fontSize: 32 }}>
+                {Math.floor(data.main.temp - 273.15)}°
+              </Typography>
               <Typography>{data.weather[0].main}</Typography>
-            </>
+            </div>
           ) : null}
         </Link>
 
         <div
           style={{
             position: 'absolute',
-            left: '40%',
+            left: '35%',
             bottom: 20,
             display: 'flex',
             flexDirection: 'row',
