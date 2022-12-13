@@ -15,9 +15,9 @@ interface Props {
 const CityCard: FC<Props> = ({ city }) => {
   const dispatch = useAppDispatch()
 
-  const addToStorage = (city: any) => {
-    dispatch(saveCityToStorage(city))
-  }
+  // const addToStorage = (city: any) => {
+  //   dispatch(saveCityToStorage(city))
+  // }
 
   const deleteCityFromStorage = (city: any) => {
     dispatch(removeCityFromStorage(city))
@@ -29,7 +29,6 @@ const CityCard: FC<Props> = ({ city }) => {
 
   return (
     <CityCardMarkup
-      addToStorage={addToStorage}
       deleteCityFromStorage={deleteCityFromStorage}
       updateCityForecast={updateCityForecast}
       city={city}

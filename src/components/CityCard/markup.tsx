@@ -8,19 +8,13 @@ import { CityAPI } from '../../api'
 
 interface ICityProps {
   city: any
-  addToStorage: (city: any) => void
   deleteCityFromStorage: (id: any) => void
   updateCityForecast: (id: any) => void
 }
 
-const CityCardMarkup: FC<ICityProps> = ({
-  city,
-  addToStorage,
-  deleteCityFromStorage,
-  updateCityForecast
-}) => {
+const CityCardMarkup: FC<ICityProps> = ({ city, deleteCityFromStorage }) => {
   const [data, setData] = useState<any>(null)
-  console.log(data)
+
   const getCurrentWeather = async () => {
     const res: any = await CityAPI.fetchCityData(city)
     setData(res)
@@ -28,7 +22,8 @@ const CityCardMarkup: FC<ICityProps> = ({
   useEffect(() => {
     getCurrentWeather()
   }, [])
-  // const temperature = Math.floor(temperature - 273.15)
+
+  const temperature = data != null ? Math.floor(data.main.temp - 273.15) : null
 
   const removeFromStorage = () => {
     deleteCityFromStorage(city)
@@ -41,19 +36,17 @@ const CityCardMarkup: FC<ICityProps> = ({
   const iconSize = 40
 
   return (
-    <Card sx={{ position: 'relative', width: 275, height: 300, margin: 1, textAlign: 'center' }}>
+    <Card sx={styles.card}>
       <CardContent>
-        <Link style={{ textDecoration: 'none' }} to={`/details/${city}`}>
-          <Typography variant='h4'>{city}</Typography>
+        <Link style={styles.link} to={`/cities/${data && data.id}`}>
+          <Typography variant='h5'>{city}</Typography>
           {data != null ? (
             <div
               style={{
                 marginTop: 60
               }}
             >
-              <Typography style={{ fontSize: 32 }}>
-                {Math.floor(data.main.temp - 273.15)}°
-              </Typography>
+              <Typography style={{ fontSize: 48, fontWeight: 600 }}>{temperature}°C</Typography>
               <Typography>{data.weather[0].main}</Typography>
             </div>
           ) : null}
@@ -82,3 +75,14 @@ const CityCardMarkup: FC<ICityProps> = ({
 }
 
 export default CityCardMarkup
+
+const styles = {
+  card: {
+    position: 'relative',
+    width: 275,
+    height: 300,
+    margin: 1,
+    textAlign: 'center'
+  },
+  link: { textDecoration: 'none' }
+}
