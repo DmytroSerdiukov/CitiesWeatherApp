@@ -6,19 +6,19 @@ import Divider from '@mui/material/Divider'
 import { Container } from '@mui/system'
 
 type DetailsParams = {
-  city: any
+  id: any
 }
 
 const DetailsPage: FC = () => {
   const [cityData, setData] = useState<any>(null)
-  const { city } = useParams<DetailsParams>()
+  const { id } = useParams<DetailsParams>()
 
   useEffect(() => {
     fetchCityDetails()
   }, [])
 
   const fetchCityDetails = async () => {
-    const response: any = await CityAPI.fetchCityData(city)
+    const response: any = await CityAPI.fetchCityById(id)
     setData(response)
   }
 

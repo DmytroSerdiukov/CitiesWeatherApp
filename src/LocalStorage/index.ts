@@ -5,14 +5,14 @@ const CitiesStorage = {
     const cities: any = JSON.parse(citiesStore)
     return cities
   },
-  addCity: (city: any) => {
+  addCity: (city: string) => {
     if (!localStorage.getItem('cities')) localStorage.setItem(`cities`, JSON.stringify([]))
     let cities: any = localStorage.getItem('cities')
     cities = JSON.parse(cities)
     cities = [...cities, city]
     localStorage.setItem('cities', JSON.stringify(cities))
   },
-  removeCity: (city: any) => {
+  removeCity: (city: string) => {
     const citiesStore: any = localStorage.getItem('cities')
     const newStore = JSON.parse(citiesStore).filter((el: any) => el != city)
     localStorage.setItem(`cities`, JSON.stringify(newStore))

@@ -28,11 +28,12 @@ const MainPage: FC = () => {
   return (
     <Container maxWidth='lg' style={styles.wrapper}>
       <Container sx={styles.inputContainer}>
-        <TextField inputRef={inputRef} label={'City name'} data-testdid={'input'} />
-        <Button sx={styles.button} variant='outlined' onClick={fetchCity}>
+        <TextField inputRef={inputRef} type={'input'} label={'City name'} data-testid={'input'} />
+        <Button sx={styles.button} variant='outlined' onClick={fetchCity} data-testid={'btn'}>
           Submit
         </Button>
       </Container>
+
       <Container style={styles.cities} data-testid='cities'>
         {cities != null && cities.length > 0
           ? cities.map((city: any, index: any) => <CityCard key={index} city={city} />)
