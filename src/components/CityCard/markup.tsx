@@ -1,10 +1,12 @@
 import { Card, CardContent, Typography } from '@mui/material'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
+import { Container } from '@mui/system'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import UpdateIcon from '@mui/icons-material/Update'
 import React, { FC, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { CityAPI } from '../../api'
+import { TailSpin } from 'react-loader-spinner'
+import { styles } from './styles'
 
 interface ICityProps {
   city: any
@@ -36,53 +38,48 @@ const CityCardMarkup: FC<ICityProps> = ({ city, deleteCityFromStorage }) => {
   const iconSize = 40
 
   return (
-    <Card sx={styles.card}>
-      <CardContent>
-        <Link style={styles.link} to={`/cities/${data && data.id}`}>
-          <Typography variant='h5'>{city}</Typography>
-          {data != null ? (
+    <>
+      {data === null ? (
+        <Container sx={styles.loader__container}>
+          <TailSpin />
+        </Container>
+      ) : (
+        <Card sx={styles.card}>
+          <CardContent>
+            <Link style={styles.link} to={`/cities/${data.id}`}>
+              <Typography variant='h5'>{city}</Typography>
+              <div
+                style={{
+                  marginTop: 60
+                }}
+              >
+                <Typography style={{ fontSize: 48, fontWeight: 600 }}>{temperature}°C</Typography>
+                <Typography>{data.weather[0].main}</Typography>
+              </div>
+            </Link>
+
             <div
               style={{
-                marginTop: 60
+                position: 'absolute',
+                left: '35%',
+                bottom: 20,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center'
               }}
             >
-              <Typography style={{ fontSize: 48, fontWeight: 600 }}>{temperature}°C</Typography>
-              <Typography>{data.weather[0].main}</Typography>
+              <div onClick={removeFromStorage}>
+                <HighlightOffIcon color={'error'} sx={{ width: iconSize, height: iconSize }} />
+              </div>
+              <div onClick={updateForecast}>
+                <UpdateIcon sx={{ width: iconSize, height: iconSize }} />
+              </div>
             </div>
-          ) : null}
-        </Link>
-
-        <div
-          style={{
-            position: 'absolute',
-            left: '35%',
-            bottom: 20,
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center'
-          }}
-        >
-          <div onClick={removeFromStorage}>
-            <HighlightOffIcon color={'error'} sx={{ width: iconSize, height: iconSize }} />
-          </div>
-          <div onClick={updateForecast}>
-            <UpdateIcon sx={{ width: iconSize, height: iconSize }} />
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
+      )}
+    </>
   )
 }
 
 export default CityCardMarkup
-
-const styles = {
-  card: {
-    position: 'relative',
-    width: 275,
-    height: 300,
-    margin: 1,
-    textAlign: 'center'
-  },
-  link: { textDecoration: 'none' }
-}

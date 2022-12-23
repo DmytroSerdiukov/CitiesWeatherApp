@@ -3,12 +3,9 @@ import { PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { RootState } from '../index'
 import { CityAPI } from '../../api'
 import CitiesStorage from '../../LocalStorage'
+import { ICityState, IAction } from '../../ts/interfaces/city-reducer'
 
-interface CityState {
-  cities: Array<any>
-}
-
-const initialState: CityState = {
+const initialState: ICityState = {
   cities: []
 }
 
@@ -16,21 +13,21 @@ export const citySlice = createSlice({
   name: 'city',
   initialState,
   reducers: {
-    getCities(state) {
-      const cities: any = CitiesStorage.getCities()
+    getCities(state: ICityState) {
+      const cities: string[] = CitiesStorage.getCities()
       state.cities = [...cities]
     },
-    saveCityToStorage(state, action) {
+    saveCityToStorage(state: ICityState, action) {
       CitiesStorage.addCity(action.payload)
       const cities = CitiesStorage.getCities()
       state.cities = [...cities]
     },
-    removeCityFromStorage(state, action) {
+    removeCityFromStorage(state: ICityState, action: IAction) {
       CitiesStorage.removeCity(action.payload)
-      const cities = CitiesStorage.getCities()
+      const cities: string[] = CitiesStorage.getCities()
       state.cities = [...cities]
     },
-    updateCardForecast(state, action) {
+    updateCardForecast(state: ICityState, action: IAction) {
       const cities = CitiesStorage.getCities()
       const updated = cities.map((el: any) => {
         if (el.id === action.payload.id) {
@@ -41,7 +38,7 @@ export const citySlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(updateCardForecast.fulfilled, (state, action) => {
+    builder.addCase(updateCardForecast.fulfilled, (state: ICityState, action) => {
       updateCardForecast(action.payload)
     })
   }
@@ -54,6 +51,22 @@ export const fetchCityByName = createAsyncThunk(
   async (name: string, thunkAPI: any) => {
     const data = await CityAPI.fetchCityData(name)
     thunkAPI.dispatch(saveCityToStorage(data.name))
+  }
+)
+export const fetchCityByCoordinates = createAsyncThunk(
+  'cities/fetchCityByCoordinates',
+  async (cords: any, thunkAPI: any) => {
+    const data = await CityAPI.fetchCityByCoordinates(cords.lat, cords.lot)
+    thunkAPI.dispatch(saveCityToStorage(data.name))
+  }
+)
+
+export const fetchCityByNameAndCountryCode = createAsyncThunk(
+  'cities/fetchCityByNameAndCountryCode',
+  async (value: string, thunkAPI: any) => {
+    const data = await CityAPI.fetchCItyByNameAndCode(value)
+    const cityData = `${data.name}, ${data.sys.country}`
+    thunkAPI.dispatch(saveCityToStorage(cityData))
   }
 )
 

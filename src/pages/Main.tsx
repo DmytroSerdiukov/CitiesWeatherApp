@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useRef } from 'react'
 import { Container } from '@mui/system'
-import { TextField, Button } from '@mui/material'
-import CityCard from '../components/CityCard/container'
-import { fetchCityByName, getCities, saveCityToStorage } from '../store/reducers/CityReducer'
+import { fetchCityByName, getCities } from '../store/reducers/CityReducer'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
+import CityCard from '../components/CityCard/container'
+import Search from '../components/Search'
+import styles from './styles/mainPage'
 
 const MainPage: FC = () => {
   const inputRef = useRef<any>()
@@ -21,21 +22,19 @@ const MainPage: FC = () => {
     dispatch(getCities())
   }
 
+  const onSearchChange = (data: any) => {
+    console.log(data)
+  }
+
   useEffect(() => {
     getCitiesFromStorage()
   }, [])
 
   return (
     <Container maxWidth='lg' style={styles.wrapper}>
-      <Container sx={styles.inputContainer}>
-        <TextField inputRef={inputRef} type={'input'} label={'City name'} data-testid={'input'} />
-        <Button sx={styles.button} variant='outlined' onClick={fetchCity} data-testid={'btn'}>
-          Submit
-        </Button>
-      </Container>
-
+      <Search />
       <Container style={styles.cities} data-testid='cities'>
-        {cities != null && cities.length > 0
+        {cities != null
           ? cities.map((city: any, index: any) => <CityCard key={index} city={city} />)
           : null}
       </Container>
@@ -44,27 +43,3 @@ const MainPage: FC = () => {
 }
 
 export default MainPage
-
-const styles: any = {
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  inputContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: 10
-  },
-  button: {
-    width: 135,
-    height: 55
-  },
-  cities: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    marginTop: 50
-  }
-}

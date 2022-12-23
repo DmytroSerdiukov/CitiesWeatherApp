@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom'
 import { CityAPI } from '../api'
 import Divider from '@mui/material/Divider'
 import { Container } from '@mui/system'
+import WeatherCondition from '../components/WeatherCondition'
+import styles from './styles/details'
 
 type DetailsParams = {
   id: any
@@ -24,38 +26,49 @@ const DetailsPage: FC = () => {
 
   const temp = cityData != null ? Math.floor(cityData.main.temp - 273.15) : null
   const feels_like = cityData != null ? Math.floor(cityData.main.feels_like - 273.15) : null
+
   return (
     <div data-testid='details' style={styles.wrapper}>
       {cityData != null ? (
         <Card style={styles.card}>
           <CardContent>
             <div style={styles.cardContent}>
-              <Typography variant='h2' data-testid='name'>
-                {cityData.name}
-              </Typography>
-              <div>
-                <Typography variant='h6' data-testid='temp'>
-                  Temperature: {temp}°
-                </Typography>
-                <Typography variant='h6' data-testid='feels_like'>
-                  Feels like: {feels_like}°
-                </Typography>
+              <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+                <div>
+                  <Typography variant='h4' data-testid='name'>
+                    {cityData.name}
+                  </Typography>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography variant='h4' data-testid='temp'>
+                      {temp}°
+                    </Typography>
+                  </div>
+                </div>
+                <WeatherCondition
+                  styles={{ width: 110, height: 110 }}
+                  description={cityData.weather[0].description}
+                />
               </div>
             </div>
-
             <Divider />
-
-            <Container style={styles.details}>
-              <Typography data-testid='description'>{cityData.weather[0].description}</Typography>
-
-              <Container style={styles.wind}>
+            <Container
+              style={{
+                marginTop: 20
+              }}
+              maxWidth={'xs'}
+            >
+              <div style={styles.detail}>
+                <Typography data-testid='description'>Description: </Typography>
+                <Typography data-testid='description'>{cityData.weather[0].description}</Typography>
+              </div>
+              <div style={styles.detail}>
+                <Typography data-testid='feels_like'>Feels like:</Typography>
+                <Typography>{feels_like}°</Typography>
+              </div>
+              <div style={styles.detail}>
                 <Typography>Wind</Typography>
-                <Container style={styles.windDetails}>
-                  <Typography>Speed: {cityData.wind.speed}</Typography>
-                  <Typography>Deg: {cityData.wind.deg}</Typography>
-                  <Typography>Gust: {cityData.wind.gust}</Typography>
-                </Container>
-              </Container>
+                <Typography>{cityData.wind.speed}</Typography>
+              </div>
             </Container>
           </CardContent>
         </Card>
@@ -65,36 +78,3 @@ const DetailsPage: FC = () => {
 }
 
 export default DetailsPage
-
-const styles: any = {
-  wrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: 50
-  },
-  card: {
-    width: 600,
-    height: 400
-  },
-  cardContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap'
-  },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  wind: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  windDetails: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: 2
-  }
-}
