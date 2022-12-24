@@ -17,7 +17,7 @@ const Search: FC = () => {
   }
 
   return (
-    <Container maxWidth={'sm'}>
+    <Container maxWidth={'sm'} sx={{ marginTop: 5 }}>
       <AsyncPaginate
         placeholder='Type a city...'
         debounceTimeout={600}

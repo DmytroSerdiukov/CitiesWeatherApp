@@ -14,7 +14,7 @@ type DetailsParams = {
 const DetailsPage: FC = () => {
   const [cityData, setData] = useState<any>(null)
   const { id } = useParams<DetailsParams>()
-
+  console.log(cityData)
   useEffect(() => {
     fetchCityDetails()
   }, [])
@@ -36,7 +36,7 @@ const DetailsPage: FC = () => {
               <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
                 <div>
                   <Typography variant='h4' data-testid='name'>
-                    {cityData.name}
+                    {cityData.name}, {cityData.sys.country}
                   </Typography>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant='h4' data-testid='temp'>
@@ -67,7 +67,15 @@ const DetailsPage: FC = () => {
               </div>
               <div style={styles.detail}>
                 <Typography>Wind</Typography>
-                <Typography>{cityData.wind.speed}</Typography>
+                <Typography>{cityData.wind.speed}m/s</Typography>
+              </div>
+              <div style={styles.detail}>
+                <Typography>Pressure</Typography>
+                <Typography>{cityData.main.pressure}</Typography>
+              </div>
+              <div style={styles.detail}>
+                <Typography>Humidity</Typography>
+                <Typography>{cityData.main.humidity}</Typography>
               </div>
             </Container>
           </CardContent>

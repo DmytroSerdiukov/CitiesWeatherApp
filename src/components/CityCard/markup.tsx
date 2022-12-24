@@ -44,7 +44,7 @@ const CityCardMarkup: FC<ICityProps> = ({ city, deleteCityFromStorage }) => {
           <TailSpin />
         </Container>
       ) : (
-        <Card sx={styles.card}>
+        <Card sx={styles.card} data-testd='card'>
           <CardContent>
             <Link style={styles.link} to={`/cities/${data.id}`}>
               <Typography variant='h5'>{city}</Typography>

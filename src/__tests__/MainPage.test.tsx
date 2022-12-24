@@ -1,7 +1,16 @@
 import React from 'react'
 import MainPage from '../pages/Main'
 
-import { screen, render, fireEvent, getByTestId, findByText, waitFor } from '@testing-library/react'
+import {
+  screen,
+  debug,
+  render,
+  fireEvent,
+  getByTestId,
+  findByText,
+  waitFor,
+  within
+} from '@testing-library/react'
 import { describe, expect } from '@jest/globals'
 
 import { Provider } from 'react-redux'
@@ -25,15 +34,12 @@ describe('Test Main Page', () => {
         <MainPage />
       </Provider>
     )
-    const input = screen.getByTestId('input')
-    const inp = screen.getByTestId('inp')
-    const btn = screen.getByTestId('btn')
+    const input = screen.getByRole('combobox')
+    const cities = screen.getByTestId('cities')
     userEvent.tab()
     userEvent.type(input, 'Kyiv')
-    userEvent.click(btn)
-    // console.log(inp)
-    // expect(inp.va).toBe('')
-    const city = await waitFor(() => screen.findByText('Kyiv'), { timeout: 3000 })
-    expect(city).toBeInTheDocument()
+    const fetchedCity = within(cities).getByText('Kyiv, UA')
+    userEvent.type(input, `{enter}`)
+    expect(fetchedCity).toBeInTheDocument()
   })
 })
