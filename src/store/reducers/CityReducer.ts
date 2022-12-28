@@ -53,13 +53,6 @@ export const fetchCityByName = createAsyncThunk(
     thunkAPI.dispatch(saveCityToStorage(data.name))
   }
 )
-export const fetchCityByCoordinates = createAsyncThunk(
-  'cities/fetchCityByCoordinates',
-  async (cords: any, thunkAPI: any) => {
-    const data = await CityAPI.fetchCityByCoordinates(cords.lat, cords.lot)
-    thunkAPI.dispatch(saveCityToStorage(data.name))
-  }
-)
 
 export const fetchCityByNameAndCountryCode = createAsyncThunk(
   'cities/fetchCityByNameAndCountryCode',

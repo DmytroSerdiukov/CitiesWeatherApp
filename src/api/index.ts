@@ -34,20 +34,6 @@ export const CityAPI = {
       throw e
     }
   },
-  fetchCityByCoordinates: async (latitude: string, lontitude: string) => {
-    const response = await axios.get(
-      'https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather',
-      {
-        params: {
-          lat: latitude,
-          lon: lontitude,
-          appid: '665b5a3342ce18418ac2dc565903a417'
-        }
-      }
-    )
-    console.log(response.data)
-    return response.data
-  },
   fetchCityById: async (id: any) => {
     const response = await axios.get(
       'https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather',

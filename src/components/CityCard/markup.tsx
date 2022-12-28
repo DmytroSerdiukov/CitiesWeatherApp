@@ -1,48 +1,31 @@
-import { Card, CardContent, Typography } from '@mui/material'
-import { Container } from '@mui/system'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff'
-import UpdateIcon from '@mui/icons-material/Update'
 import React, { FC, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { CityAPI } from '../../api'
+import { Container } from '@mui/system'
+import { Card, CardContent, Typography } from '@mui/material'
+import UpdateIcon from '@mui/icons-material/Update'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import { TailSpin } from 'react-loader-spinner'
+import { Link } from 'react-router-dom'
 import { styles } from './styles'
+import { ICityProps } from '../../ts/types/citycard'
 
-interface ICityProps {
-  city: any
-  deleteCityFromStorage: (id: any) => void
-  // updateCityForecast: (id: any) => void
-}
-
-const CityCardMarkup: FC<ICityProps> = ({ city, deleteCityFromStorage }) => {
-  const [data, setData] = useState<any | null>(null)
-  console.log('CITY', city)
-  const getCurrentWeather = async () => {
-    try {
-      const res: any = await CityAPI.fetchCityData(city)
-      setData(res)
-    } catch (e) {
-      throw e
-    }
-  }
-  useEffect(() => {
-    getCurrentWeather()
-  }, [])
-
+const CityCardMarkup: FC<ICityProps> = ({
+  cityName,
+  data,
+  deleteCityFromStorage,
+  getCurrentWeather
+}) => {
   const temperature = data != null ? Math.floor(data.main.temp - 273.15) : null
 
   const removeFromStorage = () => {
-    deleteCityFromStorage(city)
+    deleteCityFromStorage(cityName)
   }
 
   const updateForecast = () => {
     getCurrentWeather()
   }
 
-  const iconSize = 40
-
   return (
-    <div data-testid={'wrapper'}>
+    <>
       {data === null ? (
         <Container sx={styles.loader__container}>
           <TailSpin />
@@ -51,40 +34,25 @@ const CityCardMarkup: FC<ICityProps> = ({ city, deleteCityFromStorage }) => {
         <Card sx={styles.card}>
           <CardContent>
             <Link style={styles.link} to={`/cities/${data.id}`}>
-              <Typography data-testid='card' variant='h5'>
-                {city}
-              </Typography>
-              <div
-                style={{
-                  marginTop: 60
-                }}
-              >
-                <Typography style={{ fontSize: 48, fontWeight: 600 }}>{temperature}°C</Typography>
+              <Typography variant='h5'>{cityName}</Typography>
+              <Container style={styles.weatherDetailsContainer}>
+                <Typography style={styles.temperature}>{temperature}°C</Typography>
                 <Typography>{data.weather[0].main}</Typography>
-              </div>
+              </Container>
             </Link>
 
-            <div
-              style={{
-                position: 'absolute',
-                left: '35%',
-                bottom: 20,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center'
-              }}
-            >
+            <Container sx={styles.iconsContainer}>
               <div onClick={removeFromStorage}>
-                <HighlightOffIcon color={'error'} sx={{ width: iconSize, height: iconSize }} />
+                <HighlightOffIcon color={'error'} sx={styles.icon} />
               </div>
               <div onClick={updateForecast}>
-                <UpdateIcon sx={{ width: iconSize, height: iconSize }} />
+                <UpdateIcon sx={styles.icon} />
               </div>
-            </div>
+            </Container>
           </CardContent>
         </Card>
       )}
-    </div>
+    </>
   )
 }
 

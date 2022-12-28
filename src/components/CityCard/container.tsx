@@ -1,37 +1,39 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
+import { CityAPI } from '../../api'
 import { useAppDispatch } from '../../store/hooks'
-import {
-  removeCityFromStorage,
-  saveCityToStorage,
-  updateCardForecast
-} from '../../store/reducers/CityReducer'
+import { removeCityFromStorage } from '../../store/reducers/CityReducer'
+import { CityContainerProps } from '../../ts/interfaces/citycard'
 
 import CityCardMarkup from './markup'
 
-interface Props {
-  city: any
-}
+const CityCard: FC<CityContainerProps> = ({ city }) => {
+  const [data, setData] = useState<any | null>(null)
 
-const CityCard: FC<Props> = ({ city }) => {
   const dispatch = useAppDispatch()
 
-  // const addToStorage = (city: any) => {
-  //   dispatch(saveCityToStorage(city))
-  // }
+  useEffect(() => {
+    getCurrentWeather()
+  }, [])
+
+  const getCurrentWeather = async () => {
+    try {
+      const res: any = await CityAPI.fetchCityData(city)
+      setData(res)
+    } catch (e) {
+      throw e
+    }
+  }
 
   const deleteCityFromStorage = (city: any) => {
     dispatch(removeCityFromStorage(city))
   }
 
-  const updateCityForecast = (city: any) => {
-    dispatch(updateCardForecast(city))
-  }
-
   return (
     <CityCardMarkup
+      getCurrentWeather={getCurrentWeather}
       deleteCityFromStorage={deleteCityFromStorage}
-      // updateCityForecast={updateCityForecast}
-      city={city}
+      data={data}
+      cityName={city}
     />
   )
 }

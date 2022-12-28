@@ -2,7 +2,7 @@ import React from 'react'
 import { Typography } from '@mui/material'
 import { Container } from '@mui/system'
 
-const ErrorRoute = () => {
+const ErrorRoute: React.FC = () => {
   return (
     <Container
       sx={{

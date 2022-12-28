@@ -1,13 +1,13 @@
 const CitiesStorage = {
   getCities: () => {
     if (!localStorage.getItem('cities')) localStorage.setItem(`cities`, JSON.stringify([]))
-    const citiesStore: any = localStorage.getItem('cities')
+    const citiesStore: string | null = localStorage.getItem('cities')
     const cities: any = JSON.parse(citiesStore)
     return cities
   },
   addCity: (city: string) => {
     if (!localStorage.getItem('cities')) localStorage.setItem(`cities`, JSON.stringify([]))
-    let cities: any = localStorage.getItem('cities')
+    let cities: string = localStorage.getItem('cities')
     cities = JSON.parse(cities)
     cities = [...cities, city]
     localStorage.setItem('cities', JSON.stringify(cities))

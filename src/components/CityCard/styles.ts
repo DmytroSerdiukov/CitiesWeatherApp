@@ -10,7 +10,6 @@ export const styles = {
     background: '#fff',
     borderRadius: 3
   },
-
   card: {
     position: 'relative',
     width: 290,
@@ -18,5 +17,22 @@ export const styles = {
     margin: 1,
     textAlign: 'center'
   },
-  link: { textDecoration: 'none' }
+  weatherDetailsContainer: {
+    marginTop: 60
+  },
+  link: { textDecoration: 'none' },
+  temperature: {
+    fontSize: 48,
+    fontWeight: 600
+  },
+  iconsContainer: {
+    paddingTop: 3,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  icon: {
+    width: 40,
+    height: 40
+  }
 }
