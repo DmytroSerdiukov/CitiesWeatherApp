@@ -28,11 +28,11 @@ const DetailsPage: FC = () => {
   const feels_like = cityData != null ? Math.floor(cityData.main.feels_like - 273.15) : null
 
   return (
-    <div data-testid='details' style={styles.wrapper}>
+    <div data-testid='wrapper' style={styles.wrapper}>
       {cityData != null ? (
         <Card style={styles.card}>
           <CardContent>
-            <div style={styles.cardContent}>
+            <div style={styles.cardContent} data-testid='details'>
               <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
                 <div>
                   <Typography variant='h4' data-testid='name'>

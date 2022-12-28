@@ -1,45 +1,51 @@
 import React from 'react'
 import MainPage from '../pages/Main'
 
-import {
-  screen,
-  debug,
-  render,
-  fireEvent,
-  getByTestId,
-  findByText,
-  waitFor,
-  within
-} from '@testing-library/react'
+import { screen, render, getByTestId, cleanup } from '@testing-library/react'
 import { describe, expect } from '@jest/globals'
 
 import { Provider } from 'react-redux'
 import { store } from '../store'
-import userEvent from '@testing-library/user-event'
+import mockAxios from 'axios'
+import { MemoryRouter as Router } from 'react-router-dom'
+import { act } from 'react-dom/test-utils'
+import { data } from '../__mocks__/data'
+
+jest.mock('axios')
+afterEach(cleanup)
 
 describe('Test Main Page', () => {
-  it('check cities block', () => {
+  test('before card appears there is loader', async () => {
+    mockAxios.get.mockResolvedValueOnce(data)
+    const cities = ['Kyiv, UA']
+    const key = JSON.stringify(cities)
+    localStorage.setItem('cities', key)
     render(
-      <Provider store={store}>
-        <MainPage />
-      </Provider>
+      <Router>
+        <Provider store={store}>
+          <MainPage />
+        </Provider>
+      </Router>
     )
-    const block = screen.getByTestId('cities') as HTMLElement
-    expect(block).toBeInTheDocument()
+    const citiesDiv = screen.getByRole('status')
+    expect(citiesDiv).toBeInTheDocument()
   })
+  test('card shows fetched data', async () => {
+    const cities = ['Kyiv, UA']
+    const key = JSON.stringify(cities)
+    localStorage.setItem('cities', key)
+    mockAxios.get.mockResolvedValueOnce(data)
 
-  it('check city submit', async () => {
-    render(
-      <Provider store={store}>
-        <MainPage />
-      </Provider>
+    await act(async () =>
+      render(
+        <Router>
+          <Provider store={store}>
+            <MainPage />
+          </Provider>
+        </Router>
+      )
     )
-    const input = screen.getByRole('combobox')
-    const cities = screen.getByTestId('cities')
-    userEvent.tab()
-    userEvent.type(input, 'Kyiv')
-    const fetchedCity = within(cities).getByText('Kyiv, UA')
-    userEvent.type(input, `{enter}`)
-    expect(fetchedCity).toBeInTheDocument()
+    const card = await screen.findByText(/kyiv/i)
+    expect(card).toBeInTheDocument()
   })
 })

@@ -13,6 +13,7 @@ const MainPage: FC = () => {
   console.log(cities)
 
   const fetchCity = async (): Promise<any> => {
+    console.warn('deprecated. removed textfield. Changed to <Search /> ')
     const value = inputRef.current.value
     inputRef.current.value = ''
     dispatch(fetchCityByName(value))
@@ -35,7 +36,9 @@ const MainPage: FC = () => {
       <Search />
       <Container style={styles.cities} data-testid='cities'>
         {cities != null
-          ? cities.map((city: any, index: any) => <CityCard key={index} city={city} />)
+          ? cities.map((city: any, index: any) => (
+              <CityCard data-testid={`${city}`} key={index} city={city} />
+            ))
           : null}
       </Container>
     </Container>

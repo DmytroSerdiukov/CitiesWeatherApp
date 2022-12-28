@@ -11,15 +11,19 @@ import { styles } from './styles'
 interface ICityProps {
   city: any
   deleteCityFromStorage: (id: any) => void
-  updateCityForecast: (id: any) => void
+  // updateCityForecast: (id: any) => void
 }
 
 const CityCardMarkup: FC<ICityProps> = ({ city, deleteCityFromStorage }) => {
-  const [data, setData] = useState<any>(null)
-
+  const [data, setData] = useState<any | null>(null)
+  console.log('CITY', city)
   const getCurrentWeather = async () => {
-    const res: any = await CityAPI.fetchCityData(city)
-    setData(res)
+    try {
+      const res: any = await CityAPI.fetchCityData(city)
+      setData(res)
+    } catch (e) {
+      throw e
+    }
   }
   useEffect(() => {
     getCurrentWeather()
@@ -38,16 +42,18 @@ const CityCardMarkup: FC<ICityProps> = ({ city, deleteCityFromStorage }) => {
   const iconSize = 40
 
   return (
-    <>
+    <div data-testid={'wrapper'}>
       {data === null ? (
         <Container sx={styles.loader__container}>
           <TailSpin />
         </Container>
       ) : (
-        <Card sx={styles.card} data-testd='card'>
+        <Card sx={styles.card}>
           <CardContent>
             <Link style={styles.link} to={`/cities/${data.id}`}>
-              <Typography variant='h5'>{city}</Typography>
+              <Typography data-testid='card' variant='h5'>
+                {city}
+              </Typography>
               <div
                 style={{
                   marginTop: 60
@@ -78,7 +84,7 @@ const CityCardMarkup: FC<ICityProps> = ({ city, deleteCityFromStorage }) => {
           </CardContent>
         </Card>
       )}
-    </>
+    </div>
   )
 }
 

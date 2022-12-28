@@ -1,14 +1,19 @@
 import type { GroupBase, OptionsOrGroups } from 'react-select'
 import axios from 'axios'
 import { OptionType } from '../../ts/interfaces/app-search'
-import { GeoQuery } from '../../api/instance'
+// import { GeoQuery } from '../../api/instance'
 
 const getCities = async (search: string) => {
-  const cities = await GeoQuery.get('/', {
-    params: {
-      namePrefix: search
-    }
-  })
+  const cities = await axios
+    .get('https://wft-geo-db.p.rapidapi.com/v1/geo/cities', {
+      headers: {
+        'X-RapidAPI-Key': 'a5a34a2d6cmsh6e4605f1ea57743p12d4c5jsnd4802612a15a',
+        'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
+      },
+      params: {
+        namePrefix: search
+      }
+    })
     .then(function (response) {
       console.log(response.data.data)
       const data = response.data.data

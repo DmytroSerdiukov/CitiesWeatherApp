@@ -30,7 +30,7 @@ const CityCard: FC<Props> = ({ city }) => {
   return (
     <CityCardMarkup
       deleteCityFromStorage={deleteCityFromStorage}
-      updateCityForecast={updateCityForecast}
+      // updateCityForecast={updateCityForecast}
       city={city}
     />
   )
