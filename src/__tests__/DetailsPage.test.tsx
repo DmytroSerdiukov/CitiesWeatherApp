@@ -7,28 +7,14 @@ import mockAxios from 'axios'
 import { data } from '../__mocks__/data'
 
 jest.mock('axios')
+beforeEach(() => {
+  mockAxios.get.mockResolvedValueOnce(data)
+})
 afterEach(cleanup)
 
-test('shows loader before data fetched', async () => {
-  mockAxios.get.mockResolvedValueOnce(data)
-
-  render(
-    <MemoryRouter initialEntries={['/cities/703448']}>
-      <Routes>
-        <Route path='cities'>
-          <Route path=':id' element={<DetailsPage />} />
-        </Route>
-      </Routes>
-    </MemoryRouter>
-  )
-  const loader = screen.getByRole('status')
-  expect(loader).toBeInTheDocument()
-})
-
-test('details data is fetched', async () => {
-  mockAxios.get.mockResolvedValueOnce(data)
-  await act(async () => {
-    render(
+describe('test Details page', () => {
+  const setup = () => {
+    return render(
       <MemoryRouter initialEntries={['/cities/703448']}>
         <Routes>
           <Route path='cities'>
@@ -37,17 +23,27 @@ test('details data is fetched', async () => {
         </Routes>
       </MemoryRouter>
     )
+  }
+
+  test('shows loader before data fetched', async () => {
+    setup()
+    const loader = screen.getByRole('status')
+    expect(loader).toBeInTheDocument()
   })
 
-  const cityName = await screen.findByText(/kyiv/i)
-  const descirption = await screen.findByText(/description/i)
-  const feelslike = await screen.findByText(/feels like/i)
-  const wind = await screen.findByText(/wind/i)
-  const pressure = await screen.findByText(/pressure/i)
+  test('details data is fetched', async () => {
+    await act(async () => setup())
 
-  expect(cityName).toBeInTheDocument()
-  expect(descirption).toBeInTheDocument()
-  expect(feelslike).toBeInTheDocument()
-  expect(wind).toBeInTheDocument()
-  expect(pressure).toBeInTheDocument()
+    const cityName = await screen.findByText(/kyiv/i)
+    const descirption = await screen.findByText(/description/i)
+    const feelslike = await screen.findByText(/feels like/i)
+    const wind = await screen.findByText(/wind/i)
+    const pressure = await screen.findByText(/pressure/i)
+
+    expect(cityName).toBeInTheDocument()
+    expect(descirption).toBeInTheDocument()
+    expect(feelslike).toBeInTheDocument()
+    expect(wind).toBeInTheDocument()
+    expect(pressure).toBeInTheDocument()
+  })
 })
