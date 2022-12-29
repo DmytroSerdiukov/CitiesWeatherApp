@@ -1,10 +1,10 @@
 import React from 'react'
-import DetailsPage from '../pages/Details'
-import { screen, render, getByTestId, waitFor, cleanup, findByText } from '@testing-library/react'
-import { BrowserRouter, MemoryRouter, Route, Router, Routes } from 'react-router-dom'
+import { screen, render, cleanup } from '@testing-library/react'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { act } from 'react-dom/test-utils'
-import mockAxios from 'axios'
 import { data } from '../__mocks__/data'
+import DetailsPage from '../pages/Details'
+import mockAxios from 'axios'
 
 jest.mock('axios')
 beforeEach(() => {

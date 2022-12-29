@@ -42,7 +42,6 @@ test('rendering card', async () => {
   expect(city).toBeInTheDocument()
 })
 test('weather updates when update button hitted', async () => {
-  // mockAxios.get.mockResolvedValueOnce(data)
   const deleteCityFromStorage = jest.fn()
   const getCurrentWeather = jest.fn()
 
