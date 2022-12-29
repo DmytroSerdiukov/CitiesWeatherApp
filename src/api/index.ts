@@ -1,5 +1,4 @@
 import axios from 'axios'
-// import { CityQuery } from './instance'
 
 export const CityAPI = {
   fetchCityData: async (city: string) => {

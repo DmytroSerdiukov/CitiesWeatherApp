@@ -11,9 +11,6 @@ const styles: any = {
   cardContent: {
     display: 'flex',
     flexDirection: 'column'
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
-    // flexWrap: 'wrap'
   },
   details: {
     display: 'flex',
@@ -34,6 +31,11 @@ const styles: any = {
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: 2
+  },
+  loader__container: {
+    marginTop: 10,
+    display: 'flex',
+    justifyContent: 'center'
   }
 }
 

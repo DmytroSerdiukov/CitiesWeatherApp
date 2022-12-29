@@ -1,10 +1,11 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
+import { TailSpin } from 'react-loader-spinner'
 import { Container } from '@mui/system'
 import { Card, CardContent, Typography } from '@mui/material'
 import UpdateIcon from '@mui/icons-material/Update'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
-import { TailSpin } from 'react-loader-spinner'
-import { Link } from 'react-router-dom'
+
 import { styles } from './styles'
 import { ICityProps } from '../../ts/types/citycard'
 
@@ -15,7 +16,7 @@ const CityCardMarkup: FC<ICityProps> = ({
   getCurrentWeather
 }) => {
   const temperature = data != null ? Math.floor(data.main.temp - 273.15) : null
-
+  console.log(data)
   const removeFromStorage = () => {
     deleteCityFromStorage(cityName)
   }

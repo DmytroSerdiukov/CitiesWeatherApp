@@ -7,21 +7,21 @@ import { Container } from '@mui/system'
 import WeatherCondition from '../components/WeatherCondition'
 import styles from './styles/details'
 import { TailSpin } from 'react-loader-spinner'
+import { DetailsApiResponse } from '../ts/types/details_page'
 
 type DetailsParams = {
   id: any
 }
 
 const DetailsPage: FC = () => {
-  const [cityData, setData] = useState<any>(null)
+  const [cityData, setData] = useState<DetailsApiResponse>(null)
   const { id } = useParams<DetailsParams>()
-  console.log(cityData)
   useEffect(() => {
     fetchCityDetails()
   }, [])
 
   const fetchCityDetails = async () => {
-    const response: any = await CityAPI.fetchCityById(id)
+    const response: DetailsApiResponse = await CityAPI.fetchCityById(id)
     setData(response)
   }
 

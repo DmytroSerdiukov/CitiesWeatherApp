@@ -26,21 +26,7 @@ export const citySlice = createSlice({
       CitiesStorage.removeCity(action.payload)
       const cities: string[] = CitiesStorage.getCities()
       state.cities = [...cities]
-    },
-    updateCardForecast(state: ICityState, action: IAction) {
-      const cities = CitiesStorage.getCities()
-      const updated = cities.map((el: any) => {
-        if (el.id === action.payload.id) {
-          el = { ...action.payload }
-        }
-      })
-      state.cities = [...updated]
     }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(updateCardForecast.fulfilled, (state: ICityState, action) => {
-      updateCardForecast(action.payload)
-    })
   }
 })
 
@@ -60,14 +46,6 @@ export const fetchCityByNameAndCountryCode = createAsyncThunk(
     const data = await CityAPI.fetchCItyByNameAndCode(value)
     const cityData = `${data.name}, ${data.sys.country}`
     thunkAPI.dispatch(saveCityToStorage(cityData))
-  }
-)
-
-export const updateCardForecast = createAsyncThunk(
-  'cities/fetchCardForecast',
-  async (city: any, thunkAPI: any) => {
-    const data = await CityAPI.fetchCityData(city)
-    return data
   }
 )
 

@@ -1,7 +1,6 @@
 import type { GroupBase, OptionsOrGroups } from 'react-select'
 import axios from 'axios'
 import { OptionType } from '../../ts/interfaces/app-search'
-// import { GeoQuery } from '../../api/instance'
 
 const getCities = async (search: string) => {
   const cities = await axios
@@ -44,11 +43,6 @@ export const loadOptions = async (
 ) => {
   await sleep(1000)
   const filteredOptions: any = await getCities(search)
-  console.log(filteredOptions)
-  const searchLower = search.toLowerCase()
-  const options = filteredOptions.filter(({ label }: any) =>
-    label.toLowerCase().includes(searchLower)
-  )
 
   return {
     options: filteredOptions,
