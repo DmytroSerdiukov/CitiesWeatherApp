@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider'
 import { Container } from '@mui/system'
 import WeatherCondition from '../components/WeatherCondition'
 import styles from './styles/details'
+import { TailSpin } from 'react-loader-spinner'
 
 type DetailsParams = {
   id: any
@@ -80,7 +81,11 @@ const DetailsPage: FC = () => {
             </Container>
           </CardContent>
         </Card>
-      ) : null}
+      ) : (
+        <Container sx={styles.loader__container}>
+          <TailSpin />
+        </Container>
+      )}
     </div>
   )
 }
