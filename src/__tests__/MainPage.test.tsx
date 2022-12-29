@@ -1,7 +1,7 @@
 import React from 'react'
 import MainPage from '../pages/Main'
 
-import { screen, render, getByTestId, cleanup } from '@testing-library/react'
+import { screen, render, cleanup, fireEvent } from '@testing-library/react'
 import { describe, expect } from '@jest/globals'
 
 import { Provider } from 'react-redux'
@@ -30,6 +30,7 @@ describe('Test Main Page', () => {
     const citiesDiv = screen.getByRole('status')
     expect(citiesDiv).toBeInTheDocument()
   })
+
   test('card shows fetched data', async () => {
     const cities = ['Kyiv, UA']
     const key = JSON.stringify(cities)
@@ -47,5 +48,28 @@ describe('Test Main Page', () => {
     )
     const card = await screen.findByText(/kyiv/i)
     expect(card).toBeInTheDocument()
+  })
+
+  test('city card removed when remove button hitted', async () => {
+    const cities = ['Kyiv, UA']
+    const key = JSON.stringify(cities)
+    localStorage.setItem('cities', key)
+    mockAxios.get.mockResolvedValueOnce(data)
+
+    await act(async () =>
+      render(
+        <Router>
+          <Provider store={store}>
+            <MainPage />
+          </Provider>
+        </Router>
+      )
+    )
+    const card = await screen.findByText(/kyiv/i)
+    expect(card).toBeInTheDocument()
+    const button = screen.getByTestId('remove')
+    expect(button).toBeInTheDocument()
+    fireEvent.click(button)
+    expect(card).not.toBeInTheDocument()
   })
 })
