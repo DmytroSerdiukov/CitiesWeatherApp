@@ -42,10 +42,10 @@ const CityCardMarkup: FC<ICityProps> = ({
             </Link>
 
             <Container sx={styles.iconsContainer}>
-              <div onClick={removeFromStorage}>
+              <div onClick={removeFromStorage} data-testid={'remove'}>
                 <HighlightOffIcon color={'error'} sx={styles.icon} />
               </div>
-              <div onClick={updateForecast}>
+              <div onClick={updateForecast} data-testid={'update'}>
                 <UpdateIcon sx={styles.icon} />
               </div>
             </Container>

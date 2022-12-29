@@ -17,6 +17,7 @@ const CityCard: FC<CityContainerProps> = ({ city }) => {
 
   const getCurrentWeather = async () => {
     try {
+      setData(null)
       const res: any = await CityAPI.fetchCityData(city)
       setData(res)
     } catch (e) {
