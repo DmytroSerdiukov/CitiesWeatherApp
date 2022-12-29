@@ -19,7 +19,7 @@ export const citySlice = createSlice({
     },
     saveCityToStorage(state: ICityState, action) {
       CitiesStorage.addCity(action.payload)
-      const cities = CitiesStorage.getCities()
+      const cities: string[] = CitiesStorage.getCities()
       state.cities = [...cities]
     },
     removeCityFromStorage(state: ICityState, action: IAction) {
