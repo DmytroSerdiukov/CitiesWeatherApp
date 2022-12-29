@@ -5,6 +5,7 @@ import { loadOptions } from './loadOptions'
 import { useAppDispatch } from '../../store/hooks'
 import { fetchCityByNameAndCountryCode } from '../../store/reducers/CityReducer'
 import { OptionType } from '../../ts/interfaces/app-search'
+import styles from './styles'
 
 const Search: FC = () => {
   const [value, setValue] = useState<OptionType | null>(null)
@@ -17,7 +18,7 @@ const Search: FC = () => {
   }
 
   return (
-    <Container maxWidth={'sm'} sx={{ marginTop: 5 }}>
+    <Container maxWidth={'sm'} sx={styles.container}>
       <AsyncPaginate
         placeholder='Type a city...'
         debounceTimeout={600}
