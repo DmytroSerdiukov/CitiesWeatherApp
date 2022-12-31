@@ -34,7 +34,7 @@ const CityCardMarkup: FC<ICityProps> = ({
       ) : (
         <Card sx={styles.card}>
           <CardContent>
-            <Link style={styles.link} to={`/cities/${data.id}`}>
+            <Link style={styles.link} to={`/Codica_TestTask/cities/${data.id}`}>
               <Typography variant='h5'>{cityName}</Typography>
               <Container style={styles.weatherDetailsContainer}>
                 <Typography style={styles.temperature}>{temperature}°C</Typography>

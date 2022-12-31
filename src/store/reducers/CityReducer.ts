@@ -43,6 +43,8 @@ export const fetchCityByName = createAsyncThunk(
 export const fetchCityByNameAndCountryCode = createAsyncThunk(
   'cities/fetchCityByNameAndCountryCode',
   async (value: string, thunkAPI: any) => {
+    const cities = CitiesStorage.getCities()
+    if (cities.includes(value)) return
     const data = await CityAPI.fetchCItyByNameAndCode(value)
     const cityData = `${data.name}, ${data.sys.country}`
     thunkAPI.dispatch(saveCityToStorage(cityData))

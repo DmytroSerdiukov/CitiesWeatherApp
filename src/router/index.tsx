@@ -7,11 +7,11 @@ import ErrorRoute from './ErrorRoute'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/Codica_TestTask/',
     element: <MainPage />
   },
   {
-    path: '/cities/:id',
+    path: '/Codica_TestTask/cities/:id',
     element: <DetailsPage />
   },
   {
