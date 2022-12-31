@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Codica_TestTask/static/css/main.c134f6e8.css",
-    "main.js": "/Codica_TestTask/static/js/main.3417393c.js",
+    "main.js": "/Codica_TestTask/static/js/main.6c75a04e.js",
     "static/js/787.5e52bc16.chunk.js": "/Codica_TestTask/static/js/787.5e52bc16.chunk.js",
     "index.html": "/Codica_TestTask/index.html",
     "main.c134f6e8.css.map": "/Codica_TestTask/static/css/main.c134f6e8.css.map",
-    "main.3417393c.js.map": "/Codica_TestTask/static/js/main.3417393c.js.map",
+    "main.6c75a04e.js.map": "/Codica_TestTask/static/js/main.6c75a04e.js.map",
     "787.5e52bc16.chunk.js.map": "/Codica_TestTask/static/js/787.5e52bc16.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c134f6e8.css",
-    "static/js/main.3417393c.js"
+    "static/js/main.6c75a04e.js"
   ]
 }
